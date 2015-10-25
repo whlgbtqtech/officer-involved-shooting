@@ -1,0 +1,33 @@
+
+//- # oishooting - index
+
+extends ../layout
+
+block content
+
+  .container
+    .row
+      .col-md-8.col-md-offset-2
+        h1 Oishootings (#{oishootings.length})
+        p: a(href='/oishootings/new') Create New Oishooting
+        table.table.table-bordered.table-hover.table-striped
+          thead
+            th Name
+            th Created At
+            th Updated At
+            th Actions
+          tbody
+            each oishooting in oishootings
+              tr
+                td= oishooting.name
+                td= moment(oishooting.created_at).format('MM/DD/YY')
+                td= moment(oishooting.updated_at).format('MM/DD/YY')
+                td
+                  ul.list-inline
+                    li: a(href='/oishootings/' + oishooting.id).btn.btn-sm.btn-info View
+                    li: a(href='/oishootings/' + oishooting.id + '/edit').btn.btn-sm.btn-warning Edit
+                    li
+                      form(action='/oishootings/' + oishooting.id + '?_method=DELETE', method='POST').form-inline
+                        input(type='hidden', name='_csrf', value=csrf)
+                        button(type='submit').btn.btn-sm.btn-danger Remove
+        include ../_paginate
